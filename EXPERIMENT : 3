@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+// BST node structure
+struct Node {
+    int data;
+             struct Node* left;
+               struct Node* right;
+};
+
+// Create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Insert node recursively
+struct Node* insertNode(struct Node* root, int data) {
+    if (root == NULL) return createNode(data);
+    if (data < root->data) root->left = insertNode(root->left, data);
+    else if (data > root->data) root->right = insertNode(root->right, data);
+    return root;
+}
+// Find inorder successor
+struct Node* inorderSuccessor(struct Node* node) {
+    struct Node* current = node;
+    while (current && current->left != NULL) current = current->left;
+    return current;
+}
+
+// Delete node recursively
+struct Node* deleteNode(struct Node* root, int data) {
+       if (root == NULL) return root;
+
+if (data < root->data) root->left = deleteNode(root->left, data);
+    else if (data > root->data) root->right = deleteNode(root->right, data);
+    else {
+        if (root->left == NULL) {
+            struct Node* temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL) {
+            struct Node* temp = root->left;
+            free(root);
+            return temp;
+        }
+        struct Node* temp = inorderSuccessor(root->right);
+        root->data = temp->data;
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+// Inorder traversal
+void inorderTraversal(struct Node* root) {
+    if (root != NULL) {
+        inorderTraversal(root->left);
+        printf("%d ", root->data);
+        inorderTraversal(root->right);
+    }
+}
+int main() {
+    struct Node* root = NULL;
+    int choice, value;
+do {
+        printf("\nBST Operations Menu:\n");
+        printf("1. Insert Node\n");
+        printf("2. Delete Node\n");
+        printf("3. Inorder Traversal\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                root = insertNode(root, value);
+                break;
+            case 2:
+                printf("Enter value to delete: ");
+                scanf("%d", &value);
+                root = deleteNode(root, value);
+                break;
+            case 3:
+                printf("Inorder Traversal: ");
+                inorderTraversal(root);
+                printf("\n");
+                break;
+            case 4:
+                printf("Exiting program.\n");
+                break;
+            default:
+                printf("Invalid choice! Try again.\n");
+}
+    } while (choice != 4);
+
+    return 0;
+}
