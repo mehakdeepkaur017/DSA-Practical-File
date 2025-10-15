@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+// Sum of n numbers
+int sum(int n) {
+    if (n == 0)
+        return 0;
+    return n + sum(n - 1);
+}
+
+// Fibonacci sequence
+int fib(int n) {
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+    return fib(n - 1) + fib(n - 2);
+}
+// Towers of Hanoi
+void hanoi(int n, char src, char aux, char dst) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\n", src, dst);
+        return;
+    }
+    hanoi(n - 1, src, dst, aux);
+    printf("Move disk %d from %c to %c\n", n, src, dst);
+    hanoi(n - 1, aux, src, dst);
+}
+
+int main() {
+    int choice, n, i;
+
+    while (1) {
+        printf("\nChoose an operation:\n");
+        printf("1. Sum of n numbers\n");
+        printf("2. Fibonacci sequence\n");
+        printf("3. Towers of Hanoi\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter n for sum: ");
+                scanf("%d", &n);
+                printf("Sum of %d numbers = %d\n", n, sum(n));
+                break;
+             case 2:
+                printf("Enter number of terms for Fibonacci: ");
+                scanf("%d", &n);
+                printf("Fibonacci sequence: ");
+                for (i = 0; i < n; i++) {
+                    printf("%d ", fib(i));
+                }
+                printf("\n");
+                break;
+            case 3:
+                printf("Enter number of disks for Hanoi: ");
+                scanf("%d", &n);
+                printf("Steps to solve Towers of Hanoi:\n");
+                hanoi(n, 'A', 'B', 'C');
+                break;
+
+            case 4:
+                printf("Exiting program. Goodbye!\n");
+                return 0;
+
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+}
