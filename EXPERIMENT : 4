@@ -1,0 +1,137 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct node {
+    int data;
+    
+struct node *next;
+};
+struct node *head = NULL;
+
+// Create a new node
+struct node* createNode(int value) {
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->data = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Insert element at end
+void insert(int value) {
+    struct node *newNode = createNode(value);
+    if (head == NULL) {
+        head = newNode;
+        head->next = head;
+    } else {
+        struct node *temp = head;
+        while (temp->next != head)
+            temp = temp->next;
+        temp->next = newNode;
+        newNode->next = head;
+    }
+}
+
+// Display list
+void display() {
+    if (head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+struct node *temp = head;
+    do {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("\n");
+}
+
+// Delete from beginning
+void deleteBeginning() {
+    if (head == NULL) return;
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+    } else {
+        struct node *temp = head, *last = head;
+        while (last->next != head)
+            last = last->next;
+        last->next = head->next;
+        head = head->next;
+        free(temp);
+    }
+}
+// Delete from end
+void deleteEnd() {
+    if (head == NULL) return;
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+} else {
+        struct node *temp = head, *prev = NULL;
+        while (temp->next != head) {
+            prev = temp;
+            temp = temp->next;
+        }
+        prev->next = head;
+        free(temp);
+    }
+}
+// Delete given element
+void deleteElement(int key) {
+    if (head == NULL) return;
+    if (head->data == key && head->next == head) {
+        free(head);
+        head = NULL;
+        return;
+    }
+    if (head->data == key) {
+        deleteBeginning();
+        return;
+    }
+    struct node *temp = head, *prev = NULL;
+    do {
+        prev = temp;
+        temp = temp->next;
+        if (temp->data == key) {
+            prev->next = temp->next;
+            free(temp);
+            return;
+        }
+    } while (temp != head);
+}
+// Main function
+int main() {
+    int choice, value;
+    while (1) {
+        printf("\n1. Insert\n2. Delete from Beginning\n3. Delete from End\n4. Delete a Given Element\n5. Display\n6. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter value: ");
+                scanf("%d", &value);
+                insert(value);
+                break;
+            case 2:
+                deleteBeginning();
+                break;
+            case 3:
+                deleteEnd();
+                break;
+            case 4:
+                printf("Enter value to delete: ");
+                scanf("%d", &value);
+                deleteElement(value);
+                break;
+            case 5:
+                display();
+                break;
+            case 6:
+                exit(0);
+           default:
+                printf("Invalid choice\n");
+        }
+    }
+    return 0;
+}
