@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+// Bubble Sort (Ascending)
+void bubblesort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+// Selection Sort (Descending)
+void selectionsort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int max = i;
+         for (int j = i + 1; j < n; j++) {
+            if (arr[j] > arr[max]) {
+                max = j;
+            }
+        }
+        int temp = arr[i];
+        arr[i] = arr[max];
+        arr[max] = temp;
+    }
+}
+
+// Display Array
+void display(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+int main() {
+    int n;
+
+    printf("Enter size of array: ");
+    scanf("%d", &n);
+
+    int arr[n];   
+
+    printf("Enter %d elements: ", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    bubblesort(arr, n);
+
+    printf("Original array: ");
+    display(arr, n);
+      printf("Array after Bubble Sort (Ascending): ");
+      display(arr, n);
+
+      selectionsort(arr, n);
+      printf("Array after Selection Sort (Descending): ");
+      display(arr, n);
+
+    return 0;
+}
